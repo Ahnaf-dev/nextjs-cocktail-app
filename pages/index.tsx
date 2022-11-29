@@ -84,6 +84,13 @@ export default function Home({
 
   return (
     <>
+      <Head>
+        <meta
+          name="description"
+          content="Modern Responsive Application Built with NextJS and React"
+        />
+        <title>Cocktail Application</title>
+      </Head>
       <Header />
       {renderCocktails()}
       <Footer />

@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import Header from "../../components/Header";
 import Container from "../../components/Container";
+import Head from "next/head";
 import Link from "next/link";
 import cocktailsAPI from "../../api/apiConfig";
 import styled from "styled-components";
@@ -70,6 +71,13 @@ const Cocktail = ({ cocktail }: { cocktail: detailedCocktail }) => {
 
   return (
     <>
+      <Head>
+        <meta
+          name="description"
+          content="Modern Responsive Application Built with NextJS and React"
+        />
+        <title>Cocktail Application</title>
+      </Head>
       <Header />
       <Container>
         <CenterLink className="center" href="/">
