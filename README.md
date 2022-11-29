@@ -1,34 +1,136 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# NextJS Cocktail App
+A modern responsive app that interacts with a cocktail API.
 
-## Getting Started
+[Live Link](https://cocktail-nextjs-app.netlify.app/)
 
-First, run the development server:
+## Technologies
 
-```bash
-npm run dev
-# or
-yarn dev
+### Frontend
+* [Cocktail API](https://www.thecocktaildb.com/api.php)
+* **Languages**: HTML5, CSS3, ES6 JavaScript
+* **Frameworks**: React, NextJS, Styled Components
+* **Testing**: React Testing Library, Jest DOM
+* **Version Control**: Git, Github
+* **CI/CD**: GitHub Actions
+
+## Features
+
+### Technical Features
+
+* Tested user interactions such as search and pagination with React Testing Library and Jest DOM.
+* Used Jest mock functions to mock API calls.
+* Server Side Rendering with NextJS on a page by page basis to boost SEO.
+* UI styled with React Styled Components.
+* ES6 JavaScript methods and React Hooks to create search and pagination functionality.
+* Used Fetch API to call Cocktails API, destructure relevant data and create high quality components from the returned JSON data.
+* Utilized modern CSS3 features such as Grid, Flexbox and Media Queries to create a modern responsive layout.
+* Used Github Actions to run tests anytime there is a push or a pull request.
+* Usage of Git actions such as add, commit, branching and merging.
+
+### User Features
+
+* Upon visiting the website, users will see a list of cocktails in which they can search for cocktails and click on pagination to see more cocktails.
+* User can click a cocktail and see them in detail.
+
+## Code Snippets
+
+### Pagination Testing
+
+```javascript
+describe("Pagination", () => {
+  describe("when paginate to 2nd page is clicked", () => {
+    beforeEach(() => {
+      render(
+        <ThemeProvider theme={theme}>
+          <Home cocktails={cocktails} />
+        </ThemeProvider>
+      );
+    });
+
+    it("should update the current page to 2", () => {
+      const page2Pagination = screen.queryByText("2");
+      fireEvent.click(page2Pagination);
+      expect(screen.queryByText("Paginated Glass")).toBeVisible();
+    });
+  });
+});
+
+
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Search Testing
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+```javascript
+ describe("When user searches on searchbar", () => {
+    const cocktails = [
+      {
+        id: 1,
+        glass: "FilterA Glass",
+        drink: "Hydrated",
+        image: "",
+        alcoholic: "alcoholic",
+      },
+      {
+        id: 1,
+        glass: "FilterB Glass",
+        drink: "Hydrated",
+        image: "",
+        alcoholic: "alcoholic",
+      },
+    ];
+    // mock fetch api
+    global.fetch = jest.fn(() =>
+      Promise.resolve({
+        json: () =>
+          Promise.resolve({
+            drinks: [
+              {
+                idDrink: "one",
+                strGlass: "FilterA",
+                strDrink: "drink1",
+                strDrinkThumb: "",
+                strAlcoholic: "true",
+              },
+            ],
+          }),
+      })
+    );
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+    beforeEach(() => {
+      render(
+        <ThemeProvider theme={theme}>
+          <Home cocktails={cocktails} />
+        </ThemeProvider>
+      );
+    });
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+    it("should display cocktail cards that matches the search term", async () => {
+      const input = screen.queryByPlaceholderText("Search For Cocktail");
 
-## Learn More
+      await act(async () => {
+        fireEvent.change(input, { target: { value: "FilterA" } });
+      });
 
-To learn more about Next.js, take a look at the following resources:
+      await waitFor(
+        () => {
+          expect(screen.queryByText("FilterA")).toBeVisible();
+        },
+        { interval: 1000 }
+      );
+    });
+  });
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+### Server Side Rendering
 
-## Deploy on Vercel
+```javascript
+export async function getServerSideProps() {
+  return {
+    props: {
+      cocktails: await cocktailsAPI.searchCocktails(),
+    },
+  };
+}
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+```
