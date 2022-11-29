@@ -10,6 +10,7 @@ import Container from "../components/Container";
 import Grid from "../components/Grid";
 import SearchBar from "../components/SearchBar";
 import Pagination from "../components/Pagination";
+import Footer from "../components/Footer";
 
 const Center = styled.h2`
   color: ${(props) => props.theme.palette.accent};
@@ -84,6 +85,7 @@ export default function Home({
     <>
       <Header />
       {renderCocktails()}
+      <Footer />
     </>
   );
 }

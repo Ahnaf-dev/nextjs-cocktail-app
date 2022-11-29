@@ -5,6 +5,7 @@ import Link from "next/link";
 import cocktailsAPI from "../../api/apiConfig";
 import styled from "styled-components";
 import detailedCocktail from "../../types/detailedCocktail";
+import { FaGithub } from "react-icons/fa";
 
 const CenterLink = styled(Link)`
   text-align: center;
@@ -31,6 +32,28 @@ const CocktailImage = styled.div`
 `;
 
 const CocktailBody = styled.div``;
+
+const Footer = styled.footer`
+  background-color: ${(props) => props.theme.palette.secondary};
+  height: 10rem;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  font-size: 3rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  a {
+    color: white;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+`;
 
 export async function getServerSideProps(context: any) {
   const id = context.params.id;
@@ -88,6 +111,15 @@ const Cocktail = ({ cocktail }: { cocktail: detailedCocktail }) => {
           </CocktailBody>
         </CocktailCard>
       </Container>
+      <Footer>
+        <a
+          target="_blank"
+          href="https://github.com/Ahnaf-dev/nextjs-cocktail-app"
+        >
+          <FaGithub />
+          View Code
+        </a>
+      </Footer>
     </>
   );
 };
