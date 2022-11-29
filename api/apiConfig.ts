@@ -21,6 +21,7 @@ const searchCocktails = async (searchTerm = "a") => {
     return drinks;
   } catch (err) {
     console.log(err);
+    return err;
   }
 };
 

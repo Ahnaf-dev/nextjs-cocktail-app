@@ -49,7 +49,7 @@ describe("Home Component", () => {
         alcoholic: "alcoholic",
       },
     ];
-
+// mock fetch api
     global.fetch = jest.fn(() =>
       Promise.resolve({
         json: () =>
@@ -77,6 +77,7 @@ describe("Home Component", () => {
 
     it("should display cocktail cards that matches the search term", async () => {
       const input = screen.queryByPlaceholderText("Search For Cocktail");
+      
       await act(async () => {
         fireEvent.change(input, { target: { value: "FilterA" } });
       });

@@ -9,6 +9,7 @@ import DisplayCocktailOverview from "../components/Cocktail";
 import Container from "../components/Container";
 import Grid from "../components/Grid";
 import SearchBar from "../components/SearchBar";
+import Pagination from "../components/Pagination";
 
 const Center = styled.h2`
   color: ${(props) => props.theme.palette.accent};
@@ -34,11 +35,18 @@ export default function Home({
   cocktails: cocktailsOverview[];
 }) {
   const [cocktailsList, setCocktailsList] = useState(cocktails);
+  // pagination logic
+  const [page, setPage] = useState(1);
+  const postsPerPage = 8;
+  const lastIndexOfPage = postsPerPage * page;
+  const firstIndexOfPage = lastIndexOfPage - postsPerPage;
+  const totalPages = cocktailsList?.length
+    ? Math.ceil(cocktailsList.length / postsPerPage)
+    : 0;
 
   const fetchFromSearch = async (searchTerm: string) => {
     const searchedCocktails: cocktailsOverview[] =
       await cocktailsAPI.searchCocktails(searchTerm);
-
     setCocktailsList(searchedCocktails);
   };
 
@@ -52,13 +60,20 @@ export default function Home({
           {noCocktails ? (
             <Center>Sorry, No Cocktails Match Your Search Criteria</Center>
           ) : (
-            <Grid>
-              {cocktailsList.map(
-                (cocktail: cocktailsOverview, index: number) => (
-                  <DisplayCocktailOverview cocktail={cocktail} key={index} />
-                )
-              )}
-            </Grid>
+            <>
+              <Grid>
+                {cocktailsList
+                  .slice(firstIndexOfPage, lastIndexOfPage)
+                  .map((cocktail: cocktailsOverview, index: number) => (
+                    <DisplayCocktailOverview cocktail={cocktail} key={index} />
+                  ))}
+              </Grid>
+              <Pagination
+                currentPage={page}
+                totalPages={totalPages}
+                setPageNum={setPage}
+              />
+            </>
           )}
         </Container>
       </Main>
