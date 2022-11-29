@@ -1,5 +1,4 @@
 import Home from "../pages/index";
-import Header from "../components/Header";
 import { screen, render, fireEvent, waitFor } from "@testing-library/react";
 import { act } from "react-dom/test-utils";
 import { ThemeProvider } from "styled-components";
@@ -49,7 +48,7 @@ describe("Home Component", () => {
         alcoholic: "alcoholic",
       },
     ];
-// mock fetch api
+    // mock fetch api
     global.fetch = jest.fn(() =>
       Promise.resolve({
         json: () =>
@@ -77,7 +76,7 @@ describe("Home Component", () => {
 
     it("should display cocktail cards that matches the search term", async () => {
       const input = screen.queryByPlaceholderText("Search For Cocktail");
-      
+
       await act(async () => {
         fireEvent.change(input, { target: { value: "FilterA" } });
       });
