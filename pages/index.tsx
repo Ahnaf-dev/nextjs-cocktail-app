@@ -49,6 +49,7 @@ export default function Home({
     const searchedCocktails: cocktailsOverview[] =
       await cocktailsAPI.searchCocktails(searchTerm);
     setCocktailsList(searchedCocktails);
+    setPage(1);
   };
 
   const renderCocktails = () => {
