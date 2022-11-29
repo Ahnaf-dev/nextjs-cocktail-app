@@ -8,8 +8,9 @@ import cocktailsOverview from "../types/cocktailOverview";
 import DisplayCocktailOverview from "../components/Cocktail";
 import Container from "../components/Container";
 import Grid from "../components/Grid";
+import SearchBar from "../components/SearchBar";
 
-const Loader = styled.h2`
+const Center = styled.h2`
   color: ${(props) => props.theme.palette.accent};
   margin: 4rem;
   text-align: center;
@@ -18,6 +19,7 @@ const Loader = styled.h2`
 const Main = styled.main`
   padding: 5rem 0;
 `;
+
 export async function getServerSideProps() {
   return {
     props: {
@@ -33,23 +35,34 @@ export default function Home({
 }) {
   const [cocktailsList, setCocktailsList] = useState(cocktails);
 
+  const fetchFromSearch = async (searchTerm: string) => {
+    const searchedCocktails: cocktailsOverview[] =
+      await cocktailsAPI.searchCocktails(searchTerm);
+
+    setCocktailsList(searchedCocktails);
+  };
+
   const renderCocktails = () => {
     const noCocktails = !cocktailsList;
-    if (noCocktails) {
-      return <Loader className="loading">Loading...</Loader>;
-    } else {
-      return (
-        <Main className="display__cocktails">
-          <Container>
+
+    return (
+      <Main className="display__cocktails">
+        <Container>
+          <SearchBar fetchFromSearch={fetchFromSearch} />
+          {noCocktails ? (
+            <Center>Sorry, No Cocktails Match Your Search Criteria</Center>
+          ) : (
             <Grid>
-              {cocktails.map((cocktail: cocktailsOverview, index: number) => (
-                <DisplayCocktailOverview cocktail={cocktail} key={index} />
-              ))}
+              {cocktailsList.map(
+                (cocktail: cocktailsOverview, index: number) => (
+                  <DisplayCocktailOverview cocktail={cocktail} key={index} />
+                )
+              )}
             </Grid>
-          </Container>
-        </Main>
-      );
-    }
+          )}
+        </Container>
+      </Main>
+    );
   };
 
   return (

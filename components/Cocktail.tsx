@@ -5,6 +5,7 @@ import Link from "next/link";
 
 const CocktailCard = styled.div`
   background-color: ${(props) => props.theme.palette.secondary};
+  max-width: 60rem;
 `;
 const CocktailImage = styled.img`
   width: 100%;

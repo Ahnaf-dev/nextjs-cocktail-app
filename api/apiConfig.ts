@@ -3,21 +3,25 @@ const apiConfig = {
 };
 
 const searchCocktails = async (searchTerm = "a") => {
-  const response = await fetch(
-    `${apiConfig.baseURL}/search.php?s=${searchTerm}`
-  );
-  const data = await response.json();
-  let drinks = data.drinks.map((drink: any) => {
-    return {
-      id: drink.idDrink,
-      glass: drink.strGlass,
-      drink: drink.strDrink,
-      image: drink.strDrinkThumb,
-      alcoholic: drink.strAlcoholic,
-    };
-  });
+  try {
+    const response = await fetch(
+      `${apiConfig.baseURL}/search.php?s=${searchTerm}`
+    );
+    const data = await response.json();
+    let drinks = data.drinks?.map((drink: any) => {
+      return {
+        id: drink.idDrink,
+        glass: drink.strGlass,
+        drink: drink.strDrink,
+        image: drink.strDrinkThumb,
+        alcoholic: drink.strAlcoholic,
+      };
+    });
 
-  return drinks;
+    return drinks;
+  } catch (err) {
+    console.log(err);
+  }
 };
 
 const cocktailsAPI = {
